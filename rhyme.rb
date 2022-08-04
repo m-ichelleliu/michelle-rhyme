@@ -20,10 +20,7 @@ This is the horse and the hound and the horn that belonged to the farmer sowing 
         start_string = "This is the"
         
         # Read each individual chunk of words
-        file = File.open("suffixes.txt")
-        suffixes = file.readlines.map(&:chomp)
-        puts(suffixes)
-        file.close
+        suffixes = File.read("suffixes.txt").split("\n")
 
         # Loop through array of word chunks, printing an extra one each time
         output = ""
