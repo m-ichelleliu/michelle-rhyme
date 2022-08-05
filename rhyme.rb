@@ -30,8 +30,23 @@ This is the horse and the hound and the horn that belonged to the farmer sowing 
         generate_rhyme @suffixes.reverse
    end
     
+    # Mix up the phrases and then print with the pattern
     def rhyme_random
         generate_rhyme @suffixes.shuffle
+    end
+
+    # 
+    def rhyme_semirandom
+        suff = @suffixes[0..-2] #Suffixes without the house that Jack built
+        prev_line = @suffixes[-1] + '.' #The house that Jack built, as a base
+        lines = [prev_line]
+        suff.each do |suffix|
+            end_of_this_line = suffix + ' ' + prev_line
+            prev_line = end_of_this_line 
+            this_line = @start_string + ' ' + end_of_this_line
+            lines.push(this_line)
+        end
+        lines.join("\n")
     end
 
     def generate_rhyme(suffixes)

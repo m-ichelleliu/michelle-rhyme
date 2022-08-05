@@ -2,8 +2,8 @@ require 'spec_helper'
 require_relative '../rhyme.rb'
 
 describe Rhyme do
-    rhyme = Rhyme.new
-    answer = File.read('jack.txt')
+    let(:rhyme) {Rhyme.new}
+    let(:answer) {File.read('jack.txt')}
 
     describe '#rhyme_easy' do
         it 'returns the rhyme string' do
@@ -21,17 +21,17 @@ describe Rhyme do
         it 'all starts with the starting string' do
             lines = rhyme.rhyme_random.split("\n")
             lines.each do |line|
-            expect(line.start_with?(rhyme.start_string)).to eq(true)
+                expect(line.start_with?(rhyme.start_string)).to eq(true)
             end
         end
         
         it 'ends each line with the previous line (minus starting string)' do
-        lines = rhyme.rhyme_random.split("\n")
-        prev_line = ""
-        lines.each do |line|
-            line = line.delete_prefix(rhyme.start_string)
-            expect(line.end_with?(prev_line)).to eq(true)
-            prev_line = line
+            lines = rhyme.rhyme_random.split("\n")
+            prev_line = ""
+            lines.each do |line|
+                line = line.delete_prefix(rhyme.start_string)
+                expect(line.end_with?(prev_line)).to eq(true)
+                prev_line = line
             end
         end
 
@@ -52,4 +52,13 @@ describe Rhyme do
             expect(track_suf.values).to all(be true)
         end
     end    
+
+    describe '#rhyme_semirandom' do
+        it "always ends with 'the house that Jack built'" do
+            lines = rhyme.rhyme_semirandom.split("\n")
+            lines.each do |line|
+                expect(line.end_with?("the house that Jack built.")).to eq(true)
+            end
+        end
+    end
 end
