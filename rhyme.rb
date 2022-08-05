@@ -49,6 +49,3 @@ This is the horse and the hound and the horn that belonged to the farmer sowing 
         lines.join("\n")
     end 
 end
-
-thing = Rhyme.new
-puts thing.rhyme_hard

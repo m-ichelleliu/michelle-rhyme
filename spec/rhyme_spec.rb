@@ -36,5 +36,21 @@ describe Rhyme do
         end
 
         # Phrases match suffixes, and each used once
+        it 'uses each phrase from the suffixes.txt file exactly once' do
+            suffixes = File.read("suffixes.txt").split("\n")
+            track_suf = suffixes.to_h{|suffix| [suffix, false]}
+            lines = rhyme.rhyme_random.split("\n")
+            prev_line = ""
+            lines.each do |line|
+                line = line.delete_prefix(rhyme.start_string)
+                before_line = prev_line
+                prev_line = line
+                line = line.delete_suffix(before_line).strip.chomp(".")
+                if suffixes.include? line 
+                    track_suf[line] = true
+                end 
+            end
+            expect(track_suf.values).to all(be true)
+        end
     end    
 end
