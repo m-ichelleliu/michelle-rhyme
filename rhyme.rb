@@ -1,4 +1,15 @@
 class Rhyme 
+    def initialize
+
+        @start_string = "This is"
+        
+        # Read each individual chunk of words
+        @suffixes = File.read("suffixes.txt").split("\n")
+
+    end
+    
+    attr_reader :start_string
+
     # Print the whole thing via brute force
     def rhyme_easy
         "This is the house that Jack built.
@@ -17,25 +28,28 @@ This is the horse and the hound and the horn that belonged to the farmer sowing 
 
     # Print more algorithmically, since there is a pattern
     def rhyme_hard
-        start_string = "This is the"
-        
-        # Read each individual chunk of words
-        suffixes = File.read("suffixes.txt").split("\n")
+      print(@suffixes)
+   end
+    
+    def rhyme_random
+      print @suffixes.shuffle
+    end
 
+    def print(suffixes_array)
         # Loop through array of word chunks, printing an extra one each time
         output = ""
-        for i in (1..suffixes.length) do
-            result = start_string + " "
+        for i in (1..suffixes_array.length) do
+            result = @start_string + " "
             j = i
             while j >= 1 do
-                result += suffixes[suffixes.length - j]
+                result += suffixes_array[suffixes_array.length - j]
                 unless j == 1 then result += " " end
                 j -= 1
             end
-            output += result
-            unless i == suffixes.length then output += "\n" end
+            output += result + "."
+            unless i == suffixes_array.length then output += "\n" end
         end
 
         output
-    end
+    end 
 end
