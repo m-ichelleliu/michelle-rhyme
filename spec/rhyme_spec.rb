@@ -5,19 +5,19 @@ describe Rhyme do
     rhyme = Rhyme.new
     answer = File.read('jack.txt')
 
-    describe '#easy_print' do
+    describe '#rhyme_easy' do
         it 'returns the rhyme string' do
             expect(rhyme.rhyme_easy).to eq(answer)
         end
     end
 
-    describe '#hard_print' do
+    describe '#rhyme_hard' do
         it 'returns the rhyme string' do
             expect(rhyme.rhyme_hard).to eq(answer)
         end
     end
 
-    describe '#random_print' do
+    describe '#rhyme_random' do
         it 'all starts with the starting string' do
             lines = rhyme.rhyme_random.split("\n")
             lines.each do |line|
@@ -35,7 +35,6 @@ describe Rhyme do
             end
         end
 
-        # Phrases match suffixes, and each used once
         it 'uses each phrase from the suffixes.txt file exactly once' do
             suffixes = File.read("suffixes.txt").split("\n")
             track_suf = suffixes.to_h{|suffix| [suffix, false]}
