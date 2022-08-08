@@ -10,7 +10,7 @@ class Rhyme
     attr_reader :start_string
 
     # Print the whole thing via brute force
-    def rhyme_easy
+    def easy
         "This is the house that Jack built.
 This is the malt that lay in the house that Jack built.
 This is the rat that ate the malt that lay in the house that Jack built.
@@ -26,24 +26,24 @@ This is the horse and the hound and the horn that belonged to the farmer sowing 
     end    
 
     # Print more algorithmically, since there is a pattern
-    def rhyme_hard
+    def hard
         generate_rhyme @suffixes.reverse
    end
     
     # Mix up the phrases and then print with the pattern
-    def rhyme_random
+    def random
         generate_rhyme @suffixes.shuffle
     end
 
-    # 
-    def rhyme_semirandom
-        suff = @suffixes[0..-2] #Suffixes without the house that Jack built
+    # Mix up phrases, but make sure "the house that Jack built" is always last
+    def semirandom
+        suff = @suffixes[0..-2].shuffle #Suffixes without the house that Jack built
         prev_line = @suffixes[-1] + '.' #The house that Jack built, as a base
-        lines = [@start_string + ' ' + prev_line]
+        lines = ["#{@start_string} #{prev_line}"]
         suff.each do |suffix|
-            end_of_this_line = suffix + ' ' + prev_line
+            end_of_this_line = "#{suffix} #{prev_line}"
             prev_line = end_of_this_line 
-            this_line = @start_string + ' ' + end_of_this_line
+            this_line = "#{@start_string} #{end_of_this_line}"
             lines.push(this_line)
         end
         lines.join("\n")
@@ -58,7 +58,7 @@ This is the horse and the hound and the horn that belonged to the farmer sowing 
             unless prev_line == "" then end_of_this_line += " " end # Corner case; we want no space between last phrase and period.
             end_of_this_line += prev_line
             prev_line = end_of_this_line 
-            this_line = @start_string + " " + end_of_this_line + "."
+            this_line = "#{@start_string} #{end_of_this_line}."
             lines.push(this_line)
         end
         lines.join("\n")
