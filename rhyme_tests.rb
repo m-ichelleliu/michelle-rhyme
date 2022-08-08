@@ -4,9 +4,6 @@ def starts_with_start_string?(rhyme, start_string)
     test_passes = true
     lines.each do |line|
         if !line.start_with?(start_string) then test_passes = false end
-        if !test_passes
-            puts line.inspect
-        end
     end
     test_passes
 end
