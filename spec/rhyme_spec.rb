@@ -1,5 +1,6 @@
 require 'spec_helper'
 require_relative '../rhyme.rb'
+require_relative '../rhyme_tests.rb'
 
 describe Rhyme do
     let(:rhyme) {Rhyme.new}
@@ -19,37 +20,15 @@ describe Rhyme do
 
     describe '#rhyme_random' do
         it 'all starts with the starting string' do
-            lines = rhyme.rhyme_random.split("\n")
-            lines.each do |line|
-                expect(line.start_with?(rhyme.start_string)).to eq(true)
-            end
+            expect(starts_with_start_string?(rhyme.rhyme_random, rhyme.start_string)).to eq(true)
         end
         
         it 'ends each line with the previous line (minus starting string)' do
-            lines = rhyme.rhyme_random.split("\n")
-            prev_line = ""
-            lines.each do |line|
-                line = line.delete_prefix(rhyme.start_string)
-                expect(line.end_with?(prev_line)).to eq(true)
-                prev_line = line
-            end
+            expect(lines_are_cumulative?(rhyme.rhyme_random, rhyme.start_string)).to eq(true)
         end
 
         it 'uses each phrase from the suffixes.txt file exactly once' do
-            suffixes = File.read("suffixes.txt").split("\n")
-            track_suf = suffixes.to_h{|suffix| [suffix, false]}
-            lines = rhyme.rhyme_random.split("\n")
-            prev_line = ""
-            lines.each do |line|
-                line = line.delete_prefix(rhyme.start_string)
-                before_line = prev_line
-                prev_line = line
-                line = line.delete_suffix(before_line).strip.chomp(".")
-                if suffixes.include? line 
-                    track_suf[line] = true
-                end 
-            end
-            expect(track_suf.values).to all(be true)
+            expect(all_suffixes_used_once?(rhyme.rhyme_random, rhyme.start_string)).to eq(true)
         end
     end    
 
@@ -59,6 +38,19 @@ describe Rhyme do
             lines.each do |line|
                 expect(line.end_with?("the house that Jack built.")).to eq(true)
             end
+        end
+
+        # Same tests as randomized rhyme
+        it 'all starts with the starting string' do
+            expect(starts_with_start_string?(rhyme.rhyme_semirandom, rhyme.start_string)).to eq(true)
+        end
+        
+        it 'ends each line with the previous line (minus starting string)' do
+            expect(lines_are_cumulative?(rhyme.rhyme_semirandom, rhyme.start_string)).to eq(true)
+        end
+
+        it 'uses each phrase from the suffixes.txt file exactly once' do
+            expect(all_suffixes_used_once?(rhyme.rhyme_semirandom, rhyme.start_string)).to eq(true)
         end
     end
 end

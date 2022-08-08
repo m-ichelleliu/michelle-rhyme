@@ -39,7 +39,7 @@ This is the horse and the hound and the horn that belonged to the farmer sowing 
     def rhyme_semirandom
         suff = @suffixes[0..-2] #Suffixes without the house that Jack built
         prev_line = @suffixes[-1] + '.' #The house that Jack built, as a base
-        lines = [prev_line]
+        lines = [@start_string + ' ' + prev_line]
         suff.each do |suffix|
             end_of_this_line = suffix + ' ' + prev_line
             prev_line = end_of_this_line 
