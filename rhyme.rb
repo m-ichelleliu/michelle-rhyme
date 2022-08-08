@@ -37,29 +37,22 @@ This is the horse and the hound and the horn that belonged to the farmer sowing 
 
     # Mix up phrases, but make sure "the house that Jack built" is always last
     def semirandom
-        suff = @suffixes[0..-2].shuffle #Suffixes without the house that Jack built
-        prev_line = @suffixes[-1] + '.' #The house that Jack built, as a base
-        lines = ["#{@start_string} #{prev_line}"]
-        suff.each do |suffix|
-            end_of_this_line = "#{suffix} #{prev_line}"
-            prev_line = end_of_this_line 
-            this_line = "#{@start_string} #{end_of_this_line}"
-            lines.push(this_line)
-        end
-        lines.join("\n")
+        generate_rhyme(@suffixes[0..-2].shuffle, @suffixes[-1])
     end
 
-    def generate_rhyme(suffixes)
+    # Generate the rhyme given an array of suffixes, with an optional argument being
+    # the string that should always be the last suffix.
+    def generate_rhyme(suffixes, seed=suffixes[0])
         # Loop through array of word chunks, building on the previous output
-        lines = Array.new
-        prev_line = ""
-        suffixes.each do |suffix|
-            end_of_this_line = suffix
-            unless prev_line == "" then end_of_this_line += " " end # Corner case; we want no space between last phrase and period.
-            end_of_this_line += prev_line
-            prev_line = end_of_this_line 
+        lines = ["#{@start_string} #{seed}."]
+        suffixes[0..-1].inject(seed) do |prev_suffix, suffix|
+            if suffix == seed 
+                next prev_suffix 
+            end
+            end_of_this_line = "#{suffix} #{prev_suffix}"
             this_line = "#{@start_string} #{end_of_this_line}."
             lines.push(this_line)
+            end_of_this_line
         end
         lines.join("\n")
     end 
