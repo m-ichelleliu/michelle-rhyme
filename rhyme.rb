@@ -1,16 +1,15 @@
 class Rhyme 
+    START_STRING = "This is"
+
     def initialize
-        @start_string = "This is"
-        
         # Read each individual chunk of words
         @suffixes = File.read("suffixes.txt").split("\n")
-
     end
     
-    attr_reader :start_string
+    attr_reader :suffixes
 
     # Print the whole thing via brute force
-    def rhyme_easy
+    def easy
         "This is the house that Jack built.
 This is the malt that lay in the house that Jack built.
 This is the rat that ate the malt that lay in the house that Jack built.
@@ -26,25 +25,30 @@ This is the horse and the hound and the horn that belonged to the farmer sowing 
     end    
 
     # Print more algorithmically, since there is a pattern
-    def rhyme_hard
-        generate_rhyme @suffixes.reverse
+    def hard
+        generate_rhyme suffixes.reverse
    end
     
-    def rhyme_random
-        generate_rhyme @suffixes.shuffle
+    # Mix up the phrases and then print with the pattern
+    def random
+        generate_rhyme suffixes.shuffle
     end
 
-    def generate_rhyme(suffixes)
+    # Mix up phrases, but make sure "the house that Jack built" is always last
+    def semirandom
+        generate_rhyme([suffixes[-1], *suffixes[0..-2].shuffle]) #Assumes the house that jack built is the last element
+    end
+
+    # Generate the rhyme given an array of suffixes, with an optional argument being
+    # the string that should always be the last suffix.
+    def generate_rhyme(phrases)
         # Loop through array of word chunks, building on the previous output
-        lines = Array.new
-        prev_line = ""
-        suffixes.each do |suffix|
-            end_of_this_line = suffix
-            unless prev_line == "" then end_of_this_line += " " end # Corner case; we want no space between last phrase and period.
-            end_of_this_line += prev_line
-            prev_line = end_of_this_line 
-            this_line = @start_string + " " + end_of_this_line + "."
+        lines = ["#{START_STRING} #{phrases[0]}."] # One-off because we need no space before the period 🤷‍♀️
+        phrases[1..-1].inject(phrases[0]) do |prev_suffix, suffix|
+            end_of_this_line = "#{suffix} #{prev_suffix}"
+            this_line = "#{START_STRING} #{end_of_this_line}."
             lines.push(this_line)
+            end_of_this_line
         end
         lines.join("\n")
     end 
