@@ -20,20 +20,20 @@ describe Rhyme do
     describe '#random' do
         it 'all starts with the starting string' do
             lines = rhyme.random.split("\n")
-            lines.each {|line| expect(line).to start_with(rhyme.start_string)}
+            lines.each {|line| expect(line).to start_with(Rhyme::START_STRING)}
         end
         
         it 'ends each line with the previous line (minus starting string)' do
             lines = rhyme.random.split("\n")
             lines.inject("") do |prev_line, line|
-                line = line.delete_prefix(rhyme.start_string)
+                line = line.delete_prefix(Rhyme::START_STRING)
                 expect(line).to end_with(prev_line)
                 line
             end
         end
 
         it 'uses each phrase from the suffixes.txt file exactly once' do
-            track_suf = suffixes_used(rhyme.random, rhyme.start_string)
+            track_suf = suffixes_used(rhyme.random, Rhyme::START_STRING)
             expect(track_suf.values).to all(be true)
         end
 
@@ -52,20 +52,20 @@ describe Rhyme do
         # Same tests as randomized rhyme
         it 'all starts with the starting string' do
             lines = rhyme.semirandom.split("\n")
-            lines.each {|line| expect(line).to start_with(rhyme.start_string)}
+            lines.each {|line| expect(line).to start_with(Rhyme::START_STRING)}
         end
         
         it 'ends each line with the previous line (minus starting string)' do
             lines = rhyme.semirandom.split("\n")
             lines.inject("") do |prev_line, line|
-                line = line.delete_prefix(rhyme.start_string)
+                line = line.delete_prefix(Rhyme::START_STRING)
                 expect(line).to end_with(prev_line)
                 line
             end
         end
 
         it 'uses each phrase from the suffixes.txt file exactly once' do
-            track_suf = suffixes_used(rhyme.semirandom, rhyme.start_string)
+            track_suf = suffixes_used(rhyme.semirandom, Rhyme::START_STRING)
             expect(track_suf.values).to all(be true)
         end
 
